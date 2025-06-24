@@ -1,0 +1,57 @@
+{% extends 'hala9/base.html' %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+    <h1 class="text-4xl font-bold text-dark-blue mb-8">My Bookings</h1>
+
+    {% if messages %}
+        <div class="mb-6">
+        {% for message in messages %}
+            <div class="p-4 text-sm text-green-800 bg-green-100 rounded-lg" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="space-y-6">
+        {% for booking in bookings %}
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:shadow-2xl transition-shadow duration-300">
+                <div class="flex flex-col md:flex-row justify-between items-start">
+                    <div class="mb-4 md:mb-0">
+                        <h3 class="text-2xl font-bold text-dark-blue">{{ booking.service.name }}</h3>
+                        <p class="text-gray-500">With: {{ booking.hairdresser.first_name }} {{ booking.hairdresser.last_name }}</p>
+                        {% if user.role == 'hairdresser' %}
+                            <p class="text-sm text-gray-500">Customer: {{ booking.customer.username }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="text-left md:text-right">
+                        <p class="font-semibold text-lg text-accent-blue">{{ booking.date|date:"l, F jS" }}</p>
+                        <p class="text-gray-600">{{ booking.start_time|time:"g:i A" }} - {{ booking.end_time|time:"g:i A" }}</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
+                    <div>
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full
+                            {% if booking.status == 'confirmed' %}bg-green-100 text-green-800{% endif %}
+                            {% if booking.status == 'pending' %}bg-yellow-100 text-yellow-800{% endif %}
+                            {% if booking.status == 'cancelled' %}bg-red-100 text-red-800{% endif %}
+                        ">{{ booking.status|title }}</span>
+                    </div>
+
+                    {% if user.role == 'hairdresser' and booking.status == 'pending' %}
+                    <div class="flex space-x-2">
+                        <a href="{% url 'reservations:confirm_booking' booking.pk %}" class="px-4 py-1 text-sm bg-green-500 text-white rounded-full hover:bg-green-600 transition-transform transform hover:scale-105">Confirm</a>
+                        <a href="{% url 'reservations:cancel_booking' booking.pk %}" class="px-4 py-1 text-sm bg-red-500 text-white rounded-full hover:bg-red-600 transition-transform transform hover:scale-105">Cancel</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="bg-white rounded-lg shadow-lg p-12 text-center">
+                <p class="text-gray-500 text-lg">You have no bookings.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %} 

@@ -1,0 +1,32 @@
+{% extends 'hala9/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+        <h1 class="text-4xl font-bold text-dark-blue mb-2">Welcome, {{ user.first_name|default:user.username }}!</h1>
+        <p class="text-lg text-gray-500 mb-8">Manage your salon experience from here.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% if user.role == 'customer' %}
+                <a href="{% url 'reservations:booking_list' %}" class="group block bg-gray-50 p-8 rounded-lg border border-transparent hover:border-accent-blue hover:shadow-xl transition-all duration-300">
+                    <h3 class="font-bold text-dark-blue text-2xl group-hover:text-accent-blue transition-colors">View My Bookings</h3>
+                    <p class="text-gray-600">See your upcoming and past appointments.</p>
+                </a>
+                <a href="{% url 'services:service_list' %}" class="group block bg-gray-50 p-8 rounded-lg border border-transparent hover:border-accent-blue hover:shadow-xl transition-all duration-300">
+                    <h3 class="font-bold text-dark-blue text-2xl group-hover:text-accent-blue transition-colors">Book a New Service</h3>
+                    <p class="text-gray-600">Browse our services and book a new appointment.</p>
+                </a>
+            {% elif user.role == 'hairdresser' %}
+                <a href="{% url 'reservations:booking_list' %}" class="group block bg-gray-50 p-8 rounded-lg border border-transparent hover:border-accent-blue hover:shadow-xl transition-all duration-300">
+                    <h3 class="font-bold text-dark-blue text-2xl group-hover:text-accent-blue transition-colors">View My Schedule</h3>
+                    <p class="text-gray-600">See all your upcoming bookings.</p>
+                </a>
+                <a href="{% url 'services:manage_services_list' %}" class="group block bg-gray-50 p-8 rounded-lg border border-transparent hover:border-accent-blue hover:shadow-xl transition-all duration-300">
+                    <h3 class="font-bold text-dark-blue text-2xl group-hover:text-accent-blue transition-colors">Manage My Services</h3>
+                    <p class="text-gray-600">Add, edit, or remove your offered services.</p>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %} 

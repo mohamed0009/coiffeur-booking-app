@@ -1,0 +1,114 @@
+{% load static %}
+{% load tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hala9 - Professional Hair Salon{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100 font-sans text-gray-900 flex flex-col min-h-screen">
+
+    <nav class="bg-gray-900 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="{% url 'services:service_list' %}" class="flex items-center space-x-2">
+                <svg class="h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-2xl font-bold text-white">Hala9</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="{% url 'services:service_list' %}" class="group text-gray-300 hover:text-white transition-colors duration-300">
+                    Services
+                    <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-accent-blue"></span>
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:dashboard' %}" class="group text-gray-300 hover:text-white transition-colors duration-300">
+                        Dashboard
+                        <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-accent-blue"></span>
+                    </a>
+                    <a href="{% url 'accounts:logout' %}" class="bg-accent-blue text-white px-5 py-2 rounded-full hover:bg-dark-blue transition-transform transform hover:scale-105 duration-300">Logout</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="group text-gray-300 hover:text-white transition-colors duration-300">
+                        Login
+                        <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-accent-blue"></span>
+                    </a>
+                    <a href="{% url 'accounts:register_customer' %}" class="bg-accent-blue text-white px-5 py-2 rounded-full hover:bg-dark-blue transition-transform transform hover:scale-105 duration-300">Register</a>
+                {% endif %}
+            </div>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="p-2 rounded-md text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900">
+            <a href="{% url 'services:service_list' %}" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">Services</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:dashboard' %}" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">Dashboard</a>
+                <a href="{% url 'accounts:logout' %}" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">Logout</a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">Login</a>
+                <a href="{% url 'accounts:register_customer' %}" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-12 flex-grow">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 mt-12">
+        <div class="container mx-auto px-6 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- About Section -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">Hala9</h3>
+                    <p>Your one-stop solution for professional hair care. Book your appointment with the best stylists in town.</p>
+                </div>
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'services:service_list' %}" class="hover:text-white transition-colors">Services</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'accounts:dashboard' %}" class="hover:text-white transition-colors">Dashboard</a></li>
+                        {% else %}
+                        <li><a href="{% url 'accounts:login' %}" class="hover:text-white transition-colors">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- Contact Us -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">Contact Us</h3>
+                    <p>123 Beauty Lane, Style City</p>
+                    <p>contact@hala9.com</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-500">
+                <p>&copy; {% now "Y" %} Hala9. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html> 

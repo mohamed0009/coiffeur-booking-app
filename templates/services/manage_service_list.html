@@ -1,0 +1,41 @@
+{% extends 'hala9/base.html' %}
+
+{% block title %}Manage My Services{% endblock %}
+
+{% block content %}
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-4xl font-bold text-dark-blue">Manage My Services</h1>
+        <a href="{% url 'services:add_service' %}" class="bg-button-white text-dark-blue px-5 py-2 rounded-lg hover:bg-gray-200 border border-gray-300 transition-transform transform hover:scale-105 duration-300">
+            Add New Service
+        </a>
+    </div>
+
+    {% if messages %}
+        <div class="mb-6">
+        {% for message in messages %}
+            <div class="p-4 text-sm text-green-800 bg-green-100 rounded-lg" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="bg-white rounded-xl shadow-lg">
+        <ul class="divide-y divide-gray-200">
+            {% for service in services %}
+                <li class="p-6 flex justify-between items-center transition-colors hover:bg-gray-50">
+                    <div>
+                        <h3 class="text-xl font-bold text-dark-blue">{{ service.name }}</h3>
+                        <p class="text-gray-500">Duration: {{ service.duration }} | Price: ${{ service.price|floatformat:2 }}</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <a href="{% url 'services:edit_service' service.pk %}" class="px-4 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all transform hover:scale-105">Edit</a>
+                        <a href="{% url 'services:delete_service' service.pk %}" class="px-4 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all transform hover:scale-105">Delete</a>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="p-8 text-center text-gray-500">You have not added any services yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %} 
