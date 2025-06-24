@@ -17,7 +17,7 @@
                     </p>
                     <div class="flex justify-between items-center text-gray-700 mb-6">
                         <span class="text-sm">Duration: {{ service.duration }}</span>
-                        <span class="text-3xl font-bold text-accent-blue">${{ service.price|floatformat:2 }}</span>
+                        <span class="text-3xl font-bold text-accent-blue">{{ service.price|floatformat:2 }} DH</span>
                     </div>
                     <a href="{% url 'reservations:create_booking' %}?service_id={{ service.id }}" class="block w-full text-center bg-button-white text-dark-blue py-3 rounded-lg hover:bg-gray-200 transition-all duration-300 transform group-hover:scale-105">
                         Book Appointment
